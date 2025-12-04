@@ -9,7 +9,6 @@ ThemeData lightTheme(BuildContext context) {
       primary: ThemeColor.actionPrimaryColor.color(context),
       surface: ThemeColor.surfacesBackground.color(context),
     ),
-    fontFamily: 'Poppins',
     scaffoldBackgroundColor: ThemeColor.surfacesBackground.color(context),
   );
 }
@@ -22,7 +21,6 @@ ThemeData darkTheme(BuildContext context) {
       primary: ThemeColor.actionPrimaryColor.color(context),
       surface: ThemeColor.surfacesBackground.color(context),
     ),
-    fontFamily: 'Poppins',
     scaffoldBackgroundColor: ThemeColor.surfacesBackground.color(context),
   );
 }

@@ -9,7 +9,6 @@ class AppTextStyles {
     return TextStyle(
       fontSize: 32,
       fontWeight: bold ? FontWeight.bold : FontWeight.normal,
-      fontFamily: 'Poppins',
       color: context != null 
           ? ThemeColor.textPrimaryColor.color(context) 
           : null,
@@ -23,7 +22,6 @@ class AppTextStyles {
     return TextStyle(
       fontSize: 24,
       fontWeight: bold ? FontWeight.bold : FontWeight.w600,
-      fontFamily: 'Poppins',
       color: context != null 
           ? ThemeColor.textPrimaryColor.color(context) 
           : null,
@@ -37,7 +35,6 @@ class AppTextStyles {
     return TextStyle(
       fontSize: 20,
       fontWeight: bold ? FontWeight.bold : FontWeight.w600,
-      fontFamily: 'Poppins',
       color: context != null 
           ? ThemeColor.textTitlesColor.color(context) 
           : null,
@@ -51,7 +48,6 @@ class AppTextStyles {
     return TextStyle(
       fontSize: 18,
       fontWeight: bold ? FontWeight.bold : FontWeight.w600,
-      fontFamily: 'Poppins',
       color: context != null 
           ? ThemeColor.textTitlesColor.color(context) 
           : null,
@@ -65,7 +61,6 @@ class AppTextStyles {
     return TextStyle(
       fontSize: 16,
       fontWeight: bold ? FontWeight.bold : FontWeight.normal,
-      fontFamily: 'Poppins',
       color: context != null 
           ? ThemeColor.textPrimaryColor.color(context) 
           : null,
@@ -79,7 +74,6 @@ class AppTextStyles {
     return TextStyle(
       fontSize: 14,
       fontWeight: bold ? FontWeight.bold : FontWeight.normal,
-      fontFamily: 'Poppins',
       color: context != null 
           ? ThemeColor.textPrimaryColor.color(context) 
           : null,
@@ -93,7 +87,6 @@ class AppTextStyles {
     return TextStyle(
       fontSize: 12,
       fontWeight: bold ? FontWeight.bold : FontWeight.normal,
-      fontFamily: 'Poppins',
       color: context != null 
           ? ThemeColor.textSecondaryColor.color(context) 
           : null,
