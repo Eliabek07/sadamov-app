@@ -32,7 +32,7 @@ dependencies:
   signature: ^5.4.0
   
   # Background Jobs
-  workmanager: ^0.5.2
+  # workmanager: ^0.5.2  # Temporariamente desabilitado devido a incompatibilidade com build release
   
   # Máscaras
   mask_text_input_formatter: ^2.9.0

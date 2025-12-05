@@ -46,3 +46,5 @@ app.*.map.json
 
 # Pasta de documentação do desafio (não versionar)
 Desafio Técnico - Dev Flutter/
+# Arquivos de configuração do Firebase (contém informações sensíveis)
+android/app/google-services.json
