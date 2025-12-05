@@ -1,5 +1,7 @@
 import 'package:sadamov/view/components/form/validation/validation.dart';
 
+/// Validador específico para placa de veículo
+/// Aceita formatos antigo (AAA-1234) e novo (AAA1A23)
 FormFieldValidator<String> plateValidator() {
   return (value) {
     if (value == null || value.isEmpty) {
@@ -19,6 +21,8 @@ FormFieldValidator<String> plateValidator() {
   };
 }
 
+/// Validador completo para campo de placa
+/// Combina validação de campo obrigatório e formato de placa
 final plateFieldValidator = validate([
   notEmpty(),
   plateValidator(),

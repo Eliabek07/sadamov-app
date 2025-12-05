@@ -4,12 +4,13 @@ import 'package:sadamov/core/di/app_module.dart';
 import 'package:sadamov/theme.dart';
 import 'package:sadamov/utils/services/sync_service.dart';
 
+/// Ponto de entrada da aplicação
+/// Inicializa o Flutter, configura o Modular e inicia o serviço de sincronização
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Inicializar sincronização em background
+
   await SyncService.initialize();
-  
+
   runApp(
     ModularApp(
       module: AppModule(),
@@ -18,6 +19,8 @@ void main() async {
   );
 }
 
+/// Widget raiz da aplicação
+/// Configura temas claro/escuro e roteamento via Flutter Modular
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -25,6 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Ocorrência Transporte',
+      debugShowCheckedModeBanner: false,
       theme: lightTheme(context),
       darkTheme: darkTheme(context),
       themeMode: ThemeMode.system,

@@ -4,6 +4,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:sadamov/constants/colors_constants.dart';
 import 'package:sadamov/constants/text_style_constants.dart';
 import 'package:sadamov/constants/constants.dart';
+import 'package:sadamov/constants/icon_constants.dart';
+import 'package:sadamov/view/components/icon/svg_icon.dart';
 import 'package:sadamov/store/occurrence/occurrence_store.dart';
 import 'package:sadamov/view/components/form/custom_text_form_field.dart';
 import 'package:sadamov/view/components/form/validation/validation.dart';
@@ -12,6 +14,8 @@ import 'package:sadamov/view/components/button/custom_button.dart';
 import 'package:sadamov/view/pages/signature/signature_draw_page.dart';
 import 'dart:typed_data';
 
+/// Tela de revisão e finalização
+/// Permite inserir responsável e capturar assinatura digital
 class ReviewPage extends StatefulWidget {
   const ReviewPage({super.key});
 
@@ -36,6 +40,8 @@ class _ReviewPageState extends State<ReviewPage> {
     super.dispose();
   }
 
+  /// Abre a tela de desenho de assinatura
+  /// Retorna a assinatura capturada e atualiza o store
   Future<void> _openSignatureDrawer() async {
     final signature = await Modular.to.push<Uint8List>(
       MaterialPageRoute(
@@ -48,6 +54,8 @@ class _ReviewPageState extends State<ReviewPage> {
     }
   }
 
+  /// Finaliza o registro da ocorrência
+  /// Salva no banco de dados e navega para tela de sucesso
   Future<void> _finalize() async {
     if (!_formKey.currentState!.validate()) {
       return;
@@ -81,56 +89,77 @@ class _ReviewPageState extends State<ReviewPage> {
       backgroundColor: ThemeColor.surfacesBackground.color(context),
       appBar: AppBar(
         title: Text(
-          'Revisão',
-          style: AppTextStyles.titleLarge(context: context).textStyle(context),
+          'Assinatura',
+          style: AppTextStyles.titleLarge(context: context)
+              .textStyle(context)
+              .copyWith(color: Colors.white),
         ),
-        backgroundColor: ThemeColor.transparent.color(context),
-        elevation: 0,
+        backgroundColor: ThemeColor.actionPrimaryColor.color(context),
+        elevation: AppElevation.none,
+        centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: SvgIcon(
+            assetPath: AppIcons.arrowLeftSvg,
+            width: AppIconSizes.medium,
+            height: AppIconSizes.medium,
+            color: Colors.white,
+          ),
           onPressed: () => Modular.to.pop(),
         ),
       ),
       body: Observer(
-        builder: (_) => SingleChildScrollView(
-          padding: const EdgeInsets.all(AppPadding.regular),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomTextFormField(
-                  controller: _responsibleController,
-                  labelText: 'Responsável',
-                  hintText: 'Responsável',
-                  validator: validate([
-                    notEmpty(),
-                    length(min: 3, max: 100),
-                  ]),
-                  onChanged: (value) {
-                    _store.setResponsibleName(value);
-                  },
+        builder: (_) => SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(AppPadding.large),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomTextFormField(
+                          controller: _responsibleController,
+                          labelText: 'Responsável',
+                          hintText: 'Responsável',
+                          validator: validate([
+                            notEmpty(),
+                            length(min: 3, max: 100),
+                          ]),
+                          onChanged: (value) {
+                            _store.setResponsibleName(value);
+                          },
+                        ),
+                        const SizedBox(height: AppPadding.large),
+                        Text(
+                          'Assinatura',
+                          style: AppTextStyles.bodyMedium(
+                            context: context,
+                          ).textStyle(context),
+                        ),
+                        const SizedBox(height: AppPadding.smallest),
+                        SignatureCanvasWidget(
+                          signatureBytes: _store.signature,
+                          onEdit: _openSignatureDrawer,
+                        ),
+                        const SizedBox(height: AppPadding.extraLarge),
+                      ],
+                    ),
+                  ),
                 ),
-                const SizedBox(height: AppPadding.large),
-                Text(
-                  'Assinatura',
-                  style: AppTextStyles.titleMedium(context: context)
-                      .textStyle(context),
-                ),
-                const SizedBox(height: AppPadding.regular),
-                SignatureCanvasWidget(
-                  signatureBytes: _store.signature,
-                  onEdit: _openSignatureDrawer,
-                ),
-                const SizedBox(height: AppPadding.extraLarge),
-                CustomButton(
+              ),
+              Padding(
+                padding: const EdgeInsets.all(AppPadding.large),
+                child: CustomButton(
                   text: 'Finalizar',
                   onPressed: _store.canFinalize ? _finalize : null,
                   isEnabled: _store.canFinalize,
                   isLoading: _store.isLoading,
+                  leftIconSvg: AppIcons.checkCircleSvg,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

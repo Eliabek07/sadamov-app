@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'dart:typed_data';
 import 'package:sadamov/constants/colors_constants.dart';
 import 'package:sadamov/constants/constants.dart';
+import 'package:sadamov/constants/icon_constants.dart';
+import 'package:sadamov/view/components/icon/svg_icon.dart';
 
+/// Widget para captura e exibição de fotos
+/// Exibe foto capturada ou botão para capturar nova foto
 class PhotoCaptureWidget extends StatelessWidget {
   final Uint8List? photoBytes;
   final VoidCallback onCapture;
@@ -21,10 +25,11 @@ class PhotoCaptureWidget extends StatelessWidget {
       return Stack(
         children: [
           Container(
-            width: 150,
-            height: 150,
+            width: AppPhotoSizes.regular,
+            height: AppPhotoSizes.regular,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppBorderRadius.small),
+              color: ThemeColor.surfacesFields.color(context),
               image: DecorationImage(
                 image: MemoryImage(photoBytes!),
                 fit: BoxFit.cover,
@@ -33,20 +38,20 @@ class PhotoCaptureWidget extends StatelessWidget {
           ),
           if (onRemove != null)
             Positioned(
-              top: 8,
-              right: 8,
+              top: AppPadding.small,
+              right: AppPadding.small,
               child: GestureDetector(
                 onTap: onRemove,
                 child: Container(
-                  padding: const EdgeInsets.all(4),
+                  padding: const EdgeInsets.all(AppPadding.smallest),
                   decoration: const BoxDecoration(
                     color: Colors.black54,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
-                    Icons.close,
+                    AppIcons.close,
                     color: Colors.white,
-                    size: 20,
+                    size: AppIconSizes.regular,
                   ),
                 ),
               ),
@@ -58,28 +63,20 @@ class PhotoCaptureWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onCapture,
       child: Container(
-        width: 150,
-        height: 150,
+        width: AppPhotoSizes.regular,
+        height: AppPhotoSizes.regular,
         decoration: BoxDecoration(
-          border: Border.all(
-            color: ThemeColor.actionPrimaryColor.color(context),
-            width: 2,
-          ),
+          color: ThemeColor.surfacesFields.color(context),
           borderRadius: BorderRadius.circular(AppBorderRadius.small),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Stack(
           children: [
-            Icon(
-              Icons.camera_alt,
-              size: 48,
-              color: ThemeColor.actionPrimaryColor.color(context),
-            ),
-            const SizedBox(height: AppPadding.small),
-            Text(
-              'Tirar foto',
-              style: TextStyle(
-                color: ThemeColor.actionPrimaryColor.color(context),
+            Center(
+              child: SvgIcon(
+                assetPath: AppIcons.cameraAddSvg,
+                width: AppIconSizes.huge,
+                height: AppIconSizes.huge,
+                color: ThemeColor.textSecondaryColor.color(context),
               ),
             ),
           ],
@@ -88,4 +85,3 @@ class PhotoCaptureWidget extends StatelessWidget {
     );
   }
 }
-

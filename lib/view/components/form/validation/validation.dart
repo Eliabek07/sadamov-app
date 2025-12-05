@@ -1,5 +1,7 @@
 typedef FormFieldValidator<T> = String? Function(T? value);
 
+/// Combina múltiplos validadores em um único validador
+/// Retorna o primeiro erro encontrado ou null se todos passarem
 FormFieldValidator<T> validate<T>(List<FormFieldValidator<T>> validators) {
   return (value) {
     for (var validator in validators) {
@@ -12,6 +14,8 @@ FormFieldValidator<T> validate<T>(List<FormFieldValidator<T>> validators) {
   };
 }
 
+/// Validador que verifica se o campo não está vazio
+/// Aceita mensagem customizada opcional
 FormFieldValidator<String> notEmpty({String? message}) {
   return (value) {
     if (value == null || value.isEmpty) {
@@ -21,6 +25,8 @@ FormFieldValidator<String> notEmpty({String? message}) {
   };
 }
 
+/// Validador que verifica o tamanho do campo
+/// Aceita mínimo, máximo e mensagem customizada opcionais
 FormFieldValidator<String> length({
   int? min,
   int? max,

@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 import 'dart:convert';
 
+/// Modelo de dados que representa uma ocorrência de transporte
+/// Contém informações sobre placa, fotos, responsável, assinatura e status de sincronização
 class OccurrenceModel {
   final int? id;
   final String plate;
@@ -22,6 +24,8 @@ class OccurrenceModel {
     this.isSynced = false,
   });
 
+  /// Converte o modelo para formato JSON
+  /// Fotos e assinatura são codificadas em base64 para armazenamento
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -35,6 +39,8 @@ class OccurrenceModel {
     };
   }
 
+  /// Cria uma instância do modelo a partir de JSON
+  /// Decodifica fotos e assinatura de base64 para Uint8List
   factory OccurrenceModel.fromJson(Map<String, dynamic> json) {
     final photosString = json['photos'] as String;
     final photosList = photosString.isEmpty 

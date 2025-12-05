@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sadamov/constants/colors_constants.dart';
 
+/// Configura o tema claro da aplicação
 ThemeData lightTheme(BuildContext context) {
   return ThemeData(
     useMaterial3: true,
@@ -13,6 +14,7 @@ ThemeData lightTheme(BuildContext context) {
   );
 }
 
+/// Configura o tema escuro da aplicação
 ThemeData darkTheme(BuildContext context) {
   return ThemeData(
     useMaterial3: true,

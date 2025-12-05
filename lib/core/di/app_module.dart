@@ -8,22 +8,19 @@ import 'package:sadamov/view/pages/occurrence/occurrence_page.dart';
 import 'package:sadamov/view/pages/review/review_page.dart';
 import 'package:sadamov/view/pages/success/success_page.dart';
 
+/// Módulo principal do Flutter Modular
+/// Configura injeção de dependências e rotas da aplicação
 class AppModule extends Module {
+  /// Registra todas as dependências como singletons
   @override
   void binds(i) {
-    // Stores
     i.addSingleton<OccurrenceStore>(OccurrenceStore.new);
-    
-    // Repositories
     i.addSingleton<OccurrenceRepository>(OccurrenceRepository.new);
-    
-    // Services
     i.addSingleton<CameraService>(CameraService.new);
-    
-    // Clients
     i.addSingleton<OccurrenceClient>(OccurrenceClient.new);
   }
 
+  /// Define todas as rotas da aplicação
   @override
   void routes(r) {
     r.child('/', child: (_) => const ChecklistPage());
@@ -38,4 +35,3 @@ class AppModule extends Module {
     );
   }
 }
-

@@ -5,12 +5,16 @@ import 'dart:typed_data';
 import 'package:sadamov/model/exception/business_exception.dart';
 import 'package:sadamov/utils/secure_logger.dart';
 
+/// Serviço responsável por gerenciar captura de fotos
+/// Solicita permissões e captura imagens da câmera do dispositivo
 class CameraService {
   final ImagePicker _imagePicker = ImagePicker();
 
+  /// Captura uma foto usando a câmera do dispositivo
+  /// Solicita permissão de câmera se necessário
+  /// Retorna os bytes da imagem ou null se o usuário cancelar
   Future<Uint8List?> capturePhoto() async {
     try {
-      // Solicitar permissão
       final status = await Permission.camera.request();
       if (status != PermissionStatus.granted) {
         throw BusinessException(
@@ -18,7 +22,6 @@ class CameraService {
         );
       }
 
-      // Capturar foto
       final XFile? image = await _imagePicker.pickImage(
         source: ImageSource.camera,
         maxWidth: 1920,
@@ -28,7 +31,6 @@ class CameraService {
 
       if (image == null) return null;
 
-      // Converter para bytes
       final file = File(image.path);
       final bytes = await file.readAsBytes();
       
@@ -40,6 +42,8 @@ class CameraService {
     }
   }
 
+  /// Verifica se a permissão de câmera foi concedida
+  /// Retorna true se a permissão está ativa, false caso contrário
   Future<bool> checkCameraPermission() async {
     final status = await Permission.camera.status;
     return status == PermissionStatus.granted;

@@ -6,12 +6,14 @@ import 'package:sadamov/utils/secure_logger.dart';
 
 part 'occurrence_store.g.dart';
 
+/// Store MobX que gerencia o estado da ocorrência durante o fluxo
+/// Contém observables para placa, fotos, responsável e assinatura
+/// Implementa lógica de validação e regras de negócio
 class OccurrenceStore = _OccurrenceStore with _$OccurrenceStore;
 
 abstract class _OccurrenceStore with Store {
   final OccurrenceRepository _repository = OccurrenceRepository();
 
-  // Observables
   @observable
   String _plateNumber = '';
 
@@ -30,7 +32,6 @@ abstract class _OccurrenceStore with Store {
   @observable
   String? _errorMessage;
 
-  // Getters
   @computed
   String get plateNumber => _plateNumber;
 
@@ -49,6 +50,8 @@ abstract class _OccurrenceStore with Store {
   @computed
   String? get errorMessage => _errorMessage;
 
+  /// Valida se a placa está no formato correto (antigo ou novo)
+  /// Remove espaços e hífens antes de validar
   @computed
   bool get isPlateValid {
     if (_plateNumber.isEmpty) return false;
@@ -58,29 +61,37 @@ abstract class _OccurrenceStore with Store {
     return oldPattern.hasMatch(cleaned) || newPattern.hasMatch(cleaned);
   }
 
+  /// Verifica se há pelo menos 1 foto capturada
   @computed
   bool get hasMinimumPhotos => _photos.length >= 1;
 
+  /// Verifica se pode avançar para próxima etapa
+  /// Requer placa válida e pelo menos 1 foto
   @computed
   bool get canProceedToNextStep => isPlateValid && hasMinimumPhotos;
 
+  /// Verifica se pode finalizar a ocorrência
+  /// Requer responsável preenchido e assinatura válida
   @computed
   bool get canFinalize => 
       _responsibleName.isNotEmpty && 
       _signature != null && 
       _signature!.isNotEmpty;
 
-  // Actions
+  /// Define o número da placa do veículo
   @action
   void setPlateNumber(String value) {
     _plateNumber = value;
   }
 
+  /// Adiciona uma foto à lista de fotos da ocorrência
   @action
   void addPhoto(Uint8List photoBytes) {
     _photos.add(photoBytes);
   }
 
+  /// Remove uma foto da lista pelo índice
+  /// Valida o índice antes de remover
   @action
   void removePhoto(int index) {
     if (index >= 0 && index < _photos.length) {
@@ -88,16 +99,21 @@ abstract class _OccurrenceStore with Store {
     }
   }
 
+  /// Define o nome do responsável pela ocorrência
   @action
   void setResponsibleName(String value) {
     _responsibleName = value;
   }
 
+  /// Define a assinatura digital da ocorrência
   @action
   void setSignature(Uint8List signatureBytes) {
     _signature = signatureBytes;
   }
 
+  /// Salva a ocorrência no banco de dados local
+  /// Cria o modelo e persiste através do repositório
+  /// Gerencia estado de loading e tratamento de erros
   @action
   Future<void> saveOccurrence() async {
     _isLoading = true;
@@ -124,6 +140,8 @@ abstract class _OccurrenceStore with Store {
     }
   }
 
+  /// Reseta todos os campos do store para valores iniciais
+  /// Usado após finalizar uma ocorrência com sucesso
   @action
   void reset() {
     _plateNumber = '';

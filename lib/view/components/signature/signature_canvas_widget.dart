@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'dart:typed_data';
-import 'package:sadamov/constants/colors_constants.dart';
 import 'package:sadamov/constants/constants.dart';
+import 'package:sadamov/constants/text_style_constants.dart';
+import 'package:sadamov/constants/colors_constants.dart';
 
+/// Widget para exibir assinatura digital
+/// Mostra assinatura capturada ou placeholder para edição
 class SignatureCanvasWidget extends StatelessWidget {
   final Uint8List? signatureBytes;
   final VoidCallback onEdit;
@@ -19,25 +22,19 @@ class SignatureCanvasWidget extends StatelessWidget {
       return GestureDetector(
         onTap: onEdit,
         child: Container(
-          height: 150,
+          height: AppSignatureSizes.height,
           decoration: BoxDecoration(
             border: Border.all(
-              color: ThemeColor.actionPrimaryColor.color(context),
+              color: ThemeColor.borderDefault.color(context),
             ),
-            borderRadius: BorderRadius.circular(AppBorderRadius.small),
+            borderRadius: BorderRadius.circular(AppBorderRadius.regSmall),
           ),
-          child: Stack(
-            children: [
-              Image.memory(signatureBytes!),
-              Positioned(
-                bottom: 8,
-                right: 8,
-                child: TextButton(
-                  onPressed: onEdit,
-                  child: const Text('Editar assinatura'),
-                ),
-              ),
-            ],
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(AppBorderRadius.regSmall),
+            child: Image.memory(
+              signatureBytes!,
+              fit: BoxFit.contain,
+            ),
           ),
         ),
       );
@@ -46,30 +43,23 @@ class SignatureCanvasWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onEdit,
       child: Container(
-        height: 150,
+        height: AppSignatureSizes.height,
         decoration: BoxDecoration(
+          color: ThemeColor.surfacesFields.color(context),
           border: Border.all(
-            color: ThemeColor.actionPrimaryColor.color(context),
-            width: 2,
+            color: ThemeColor.borderDefault.color(context),
           ),
-          borderRadius: BorderRadius.circular(AppBorderRadius.small),
+          borderRadius: BorderRadius.circular(AppBorderRadius.regSmall),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.edit,
-              size: 48,
-              color: ThemeColor.actionPrimaryColor.color(context),
-            ),
-            const SizedBox(height: AppPadding.small),
-            Text(
-              'Adicionar assinatura',
-              style: TextStyle(
-                color: ThemeColor.actionPrimaryColor.color(context),
-              ),
-            ),
-          ],
+        child: Center(
+          child: Text(
+            'Assinatura',
+            style: AppTextStyles.bodyMedium(context: context)
+                .textStyle(context)
+                .copyWith(
+                  color: const Color(0xFF9CA3AF),
+                ),
+          ),
         ),
       ),
     );

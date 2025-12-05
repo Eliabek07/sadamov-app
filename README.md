@@ -21,6 +21,17 @@ O projeto segue os princípios de **Clean Architecture** com separação clara d
 - **Dependency Injection** via Flutter Modular
 - **Clean Architecture** com separação em camadas
 
+### Trade-offs Arquiteturais
+
+**Por que MVVM com MobX?**
+- **vs Provider**: MobX oferece reatividade automática com menos boilerplate e melhor performance
+- **vs Bloc**: MobX é mais simples para casos de uso diretos, com code generation que garante type-safety
+- **vs Riverpod**: MobX tem melhor integração com Flutter Modular e menor curva de aprendizado
+
+**Por que Flutter Modular?**
+- **vs Navigator 2.0**: Flutter Modular oferece DI integrada e roteamento declarativo mais simples
+- **vs GoRouter**: Modular tem melhor integração com injeção de dependências e suporte a rotas nomeadas
+
 ## 🛠️ Stack Tecnológica
 
 - **Flutter**: Framework de desenvolvimento
@@ -121,6 +132,13 @@ O projeto utiliza **SQLite** para persistência local dos dados. A escolha do SQ
 4. **Confiabilidade**: Banco de dados relacional robusto e amplamente testado
 5. **Escalabilidade**: Suporta grandes volumes de dados sem degradação de performance
 
+### Trade-offs Técnicos
+
+**Por que SQLite em vez de outras soluções?**
+- **vs SharedPreferences**: SQLite oferece estrutura relacional e suporte a dados complexos (fotos, assinaturas em base64)
+- **vs Hive/Isar**: SQLite é mais maduro, amplamente testado e não requer code generation adicional
+- **vs Cache em memória**: SQLite garante persistência mesmo após fechamento do app, essencial para funcionalidade offline
+
 ### Estrutura do Banco
 
 ```sql
@@ -140,14 +158,23 @@ CREATE TABLE occurrences (
 
 ### Background Job
 
-O aplicativo utiliza **Workmanager** para sincronização automática em background:
+O aplicativo utiliza **Timer periódico** para sincronização automática em background:
 
-- **Frequência**: A cada 5 minutos
+- **Frequência**: A cada 7 minutos (dentro do intervalo de 5-10 minutos conforme requisito)
 - **Condição**: Apenas quando há conexão com internet
 - **Taxa de Sucesso**: 70% (simulado)
 - **Comportamento**: 
   - Em caso de sucesso: marca como sincronizado e remove do banco local
   - Em caso de falha: mantém no banco para tentativa posterior
+
+### Trade-offs Técnicos
+
+**Por que Timer em vez de Workmanager para intervalo de 5-10 minutos?**
+
+- **Workmanager no Android**: Exige mínimo de 15 minutos para tarefas periódicas, não atendendo ao requisito de 5-10 minutos
+- **Timer.periodic**: Permite intervalo exato de 7 minutos, garantindo que o requisito seja atendido
+- **Limitação**: Timer funciona apenas quando o app está em execução (em foreground ou background)
+- **Workmanager como complemento**: Inicializado no Android para execução quando app está fechado, mas com limitação de 15 minutos do sistema
 
 ### Cliente Mock
 
@@ -232,10 +259,43 @@ lib/
 
 ## 🧪 Testes
 
+O projeto inclui uma suíte completa de testes:
+
+### Testes Unitários
+- **Validadores**: Testes para validação de placa e campos obrigatórios
+- **Store**: Testes para lógica de negócio e estado reativo
+- **Client**: Testes para simulação de API
+
+### Testes de Widget
+- **Componentes**: Testes para CustomButton e CustomTextFormField
+- **Interações**: Testes para estados habilitado/desabilitado e loading
+
+### Testes de Integração
+- **Fluxo Completo**: Teste end-to-end do fluxo checklist → ocorrência → revisão → sucesso
+- **Validações**: Testes para validação de botões em diferentes estados
+
 Para executar os testes:
 
 ```bash
 flutter test
+```
+
+Para executar apenas testes unitários:
+
+```bash
+flutter test test/unit
+```
+
+Para executar apenas testes de widget:
+
+```bash
+flutter test test/widget
+```
+
+Para executar apenas testes de integração:
+
+```bash
+flutter test test/integration
 ```
 
 ## 📦 Build
