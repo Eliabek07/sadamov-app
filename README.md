@@ -334,10 +334,6 @@ flutter build ios --release
 
 Este projeto foi desenvolvido como parte de um desafio técnico.
 
-## 👨‍💻 Autor
-
-Desenvolvido seguindo os padrões e convenções do .
-
 ---
 
 **Desafio Técnico - Ocorrência de Transporte (Offline → Sync)**
