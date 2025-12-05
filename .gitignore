@@ -43,3 +43,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Pasta de documentação do desafio (não versionar)
+Desafio Técnico - Dev Flutter/
