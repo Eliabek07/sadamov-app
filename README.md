@@ -209,7 +209,7 @@ O `OccurrenceClient` simula o envio para uma API real:
 
 ## 🎨 Design System
 
-O projeto segue um Design System consistente baseado nos padrões do :
+O projeto segue um Design System consistente e padronizado:
 
 ### Cores
 
