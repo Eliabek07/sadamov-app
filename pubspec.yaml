@@ -39,6 +39,9 @@ dependencies:
   
   # Utilitários
   intl: ^0.20.2
+  
+  # SVG Support
+  flutter_svg: ^2.0.9
 
 dev_dependencies:
   flutter_test:
@@ -54,4 +57,5 @@ flutter:
   
   assets:
     - assets/icon/
+    - assets/icon/linear/
     - assets/img/
